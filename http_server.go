@@ -2,6 +2,7 @@ package justgo
 
 import (
 	"context"
+	"log"
 	"net/http"
 	"os"
 	"os/signal"
@@ -9,24 +10,35 @@ import (
 )
 
 type HttpInterface struct {
-	http.Server
+	Handler http.Handler
 }
 
 func (httpInterface HttpInterface) Serve() {
-	//server := &http.Server{Addr: portInfo, Handler: n}
-	server := &HttpInterface{http.Server{}}
+	logWriter := Log.Writer()
+	defer logWriter.Close()
+
+	log.New(Log.Writer(), "", 0)
+
+	server := &http.Server{
+		Addr:     ":8080",
+		ErrorLog: log.New(logWriter, "", 0),
+		Handler: httpInterface.Handler,
+	}
+
+
 	go listenServer(server)
+	Log.Printf("listening on %s", server.Addr)
 	waitForShutdown(server)
 }
 
-func listenServer(apiServer *HttpInterface) {
+func listenServer(apiServer *http.Server) {
 	err := apiServer.ListenAndServe()
 	if err != http.ErrServerClosed {
 		Log.Fatal(err.Error())
 	}
 }
 
-func waitForShutdown(apiServer *HttpInterface) {
+func waitForShutdown(apiServer *http.Server) {
 	sig := make(chan os.Signal, 1)
 	signal.Notify(sig,
 		syscall.SIGINT,
@@ -36,5 +48,14 @@ func waitForShutdown(apiServer *HttpInterface) {
 	// Finish all apis being served and shutdown gracefully
 	apiServer.Shutdown(context.Background())
 	Log.Info("API server shutdown complete")
+}
+
+func getDefaultHttpInterface() *HttpInterface {
+
+	router := getRouter()
+	AddRoute(http.MethodGet, "/ping", pingHandler)
+	return &HttpInterface{
+		Handler: router,
+	}
 }
 

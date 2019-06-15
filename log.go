@@ -5,18 +5,18 @@ import (
 	"os"
 )
 
-var Log *log
+var Log *justGoLog
 
-type log struct {
+type justGoLog struct {
 	*logrus.Logger
 }
 
-func (log log) Load() {
+func (log justGoLog) Load() {
 
 }
 
 func init() {
-	Log = &log{&logrus.Logger{
+	Log = &justGoLog{&logrus.Logger{
 		Out:       os.Stderr,
 		Formatter: &logrus.JSONFormatter{},
 		Hooks:     make(logrus.LevelHooks),
