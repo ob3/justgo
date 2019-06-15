@@ -1,10 +1,18 @@
 package justgo
 
-type UserInterface interface {
+type ApplicationInterface interface {
 	Serve()
 }
 
-func RunUserInterface() {
-	httpServer := &HttpInterface{}
-	httpServer.Serve()
+var appInterfaces []*ApplicationInterface
+
+func RunAppInterface() {
+	for _, appInterface := range appInterfaces {
+		singleInterface := *appInterface
+		singleInterface.Serve()
+	}
+}
+
+func RegisterInterface(appInterface ApplicationInterface) {
+	appInterfaces = append(appInterfaces, &appInterface)
 }

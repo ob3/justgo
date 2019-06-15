@@ -1,7 +1,6 @@
 package justgo
 
 import (
-	"fmt"
 	"github.com/sirupsen/logrus"
 	"os"
 )
@@ -17,7 +16,6 @@ func (log log) Load() {
 }
 
 func init() {
-	fmt.Println("init Log")
 	Log = &log{&logrus.Logger{
 		Out:       os.Stderr,
 		Formatter: &logrus.JSONFormatter{},

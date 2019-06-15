@@ -1,8 +1,15 @@
 package justgo
 
+var Http *HttpInterface
+
 func Start() {
+	Log.Info("starting justgo")
 	Config.Load()
 	Log.Load()
-	Log.Info("starting")
-	RunUserInterface()
+
+	if len(appInterfaces) == 0 {
+		Http = &HttpInterface{}
+		RegisterInterface(Http)
+	}
+	RunAppInterface()
 }
