@@ -17,8 +17,6 @@ func (httpInterface HttpInterface) Serve() {
 	logWriter := Log.Writer()
 	defer logWriter.Close()
 
-	log.New(Log.Writer(), "", 0)
-
 	server := &http.Server{
 		Addr:     ":8080",
 		ErrorLog: log.New(logWriter, "", 0),
