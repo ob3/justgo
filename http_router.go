@@ -26,7 +26,6 @@ func AddRoute(method string, pattern string, handler http.HandlerFunc, middlewar
 
 	var chainedMiddleWares http.Handler
 	for i := len(middlewares) - 1; i >= 0; i-- {
-		Log.Printf("middleware index %d", i)
 		if i == len(middlewares) - 1 {
 			chainedMiddleWares = middlewares[i](handler)
 		} else {
