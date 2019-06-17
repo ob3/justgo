@@ -20,11 +20,12 @@ func (c *config) GetInt(key string) int64 {
 
 	configStr := c.fatalGetString(key)
 	config, err := strconv.ParseInt(configStr, 10, 64)
-	Log.
-		WithField("key", key).
-		WithField("err", err).
-		Fatalf("can't parsing key %s error: %s", key, err.Error())
-
+	if err != nil {
+		Log.
+			WithField("key", key).
+			WithField("err", err).
+			Fatalf("can't parsing key %s error: %s", key, err.Error())
+	}
 	return config
 }
 
@@ -42,6 +43,7 @@ func (c *config) Load() {
 	viper.AddConfigPath("../")
 	viper.AddConfigPath("../../")
 	viper.SetConfigType("yaml")
+	viper.ReadInConfig()
 }
 
 func init() {
