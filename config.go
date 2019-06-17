@@ -14,7 +14,6 @@ var DEFAULT_CONFIGS = map[string]string{
 }
 
 type config struct {
-	configMap map[string]string
 }
 
 func (c *config) GetInt(key string) int64 {
@@ -46,7 +45,7 @@ func (c *config) Load() {
 }
 
 func init() {
-	Config = &config{configMap: DEFAULT_CONFIGS}
+	Config = &config{}
 }
 
 func (c *config)fatalGetString(key string) string {
