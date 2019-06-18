@@ -44,15 +44,40 @@ func TestGetStringShouldReturnString(t *testing.T) {
 func TestFatalGetStringShouldFallbackToViperIfNotFound(t *testing.T) {
 	key := "DUMMY-KEY"
 	os.Setenv(key, "")
+	defer os.Unsetenv(key)
 	viper.SetDefault(key, "123")
 	value := Config.fatalGetString(key)
 	assert.Equal(t, "123", value)
 }
 
-func TestCheckKeyShouldExitWithCode1IfNotFound(t *testing.T) {
+func TestFatalGetStringShouldExitIfNotFound(t *testing.T) {
+	exited := false
+	defer func() {
+		assert.Equal(t, true, exited)
+	}()
+
 	fakeExit := func(code int) {
+		exited = true
 		assert.Equal(t, 1, code )
 	}
+
+	patch := monkey.Patch(os.Exit, fakeExit)
+	defer patch.Unpatch()
+
+	Config.fatalGetString("anything")
+}
+
+func TestCheckKeyShouldExitWithCode1IfNotFound(t *testing.T) {
+	exited := false
+	defer func() {
+		assert.Equal(t, true, exited)
+	}()
+
+	fakeExit := func(code int) {
+		exited = true
+		assert.Equal(t, 1, code )
+	}
+
 	patch := monkey.Patch(os.Exit, fakeExit)
 	defer patch.Unpatch()
 	checkKey("DUMMY-ENV")
