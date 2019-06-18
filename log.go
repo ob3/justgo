@@ -11,7 +11,7 @@ type justGoLog struct {
 	*logrus.Logger
 }
 
-func (log justGoLog) Load() {
+func (log *justGoLog) Load() {
 	level, e := logrus.ParseLevel(Config.GetString("LOG_LEVEL"))
 	if e != nil {
 		Log.Fatal("invalid log LOG_LEVEL value")

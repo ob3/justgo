@@ -3,6 +3,7 @@ package justgo
 import (
 	"github.com/spf13/viper"
 	"os"
+	"runtime/debug"
 	"strconv"
 )
 
@@ -61,6 +62,7 @@ func (c *config)fatalGetString(key string) string {
 
 func checkKey(key string) {
 	if !viper.IsSet(key) && os.Getenv(key) == "" {
+		debug.PrintStack()
 		Log.Fatalf("%s key is not set", key)
 	}
 }
