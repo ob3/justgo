@@ -2,8 +2,10 @@ package justgo
 
 import (
 	"os"
+	"path/filepath"
 	"runtime/debug"
 	"strconv"
+	"strings"
 
 	"github.com/spf13/viper"
 )
@@ -14,6 +16,8 @@ var DEFAULT_CONFIGS = map[string]string{
 	"APP_PORT":  "8080",
 	"LOG_LEVEL": "debug",
 }
+
+var configFile string = ""
 
 type config struct {
 }
@@ -43,16 +47,37 @@ func (c *config) GetString(key string) string {
 	return c.fatalGetString(key)
 }
 
-func (c *config) Load(paths ...string) {
+func (c *config) Add(key string, value string) {
+	DEFAULT_CONFIGS[key] = value
+}
+
+func (c *config) ConfigFile(path string) {
+	configFile = path
+}
+
+func (c *config) Load() {
 	for key, value := range DEFAULT_CONFIGS {
 		viper.SetDefault(key, value)
 	}
+
 	viper.AutomaticEnv()
-	viper.SetConfigName("application")
-	viper.AddConfigPath("./")
-	viper.AddConfigPath("../")
-	viper.AddConfigPath("../../")
-	viper.SetConfigType("yaml")
+
+	if configFile != "" {
+		Log.Info("using config file ", configFile)
+		dir, file := filepath.Split(configFile)
+
+		fileSplitted := strings.Split(file, ".")
+		viper.SetConfigName(fileSplitted[0])
+		viper.AddConfigPath(dir)
+		viper.SetConfigType(fileSplitted[1])
+	} else {
+		viper.SetConfigName("application")
+		viper.AddConfigPath("./")
+		viper.AddConfigPath("../")
+		viper.AddConfigPath("../../")
+		viper.SetConfigType("yaml")
+	}
+
 	viper.ReadInConfig()
 }
 

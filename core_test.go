@@ -13,7 +13,7 @@ func TestStart(t *testing.T) {
 
 	configured, logged, runInterface, defaultInterface, registerInterface := false, false, false, false, false
 
-	dummyConfigLoad := func(*config, ...string) {
+	dummyConfigLoad := func(*config) {
 		configured = true
 	}
 	dummyLogLoad := func(*justGoLog) {
@@ -61,7 +61,7 @@ func TestStartShouldNotUseDefaultInterfaceIfNotEmpty(t *testing.T) {
 	httpInterface := getDefaultHttpInterface()
 	RegisterInterface(httpInterface)
 
-	dummyConfigLoad := func(*config, ...string) { configured = true }
+	dummyConfigLoad := func(*config) { configured = true }
 	dummyLogLoad := func(*justGoLog) { logged = true }
 	dummyRunAppInterface := func() { runInterface = true }
 	dummyGetDefaultInterface := func() *HttpInterface {

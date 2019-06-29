@@ -2,13 +2,16 @@ package main
 
 import (
 	"fmt"
-	"github.com/ob3/justgo"
 	"net/http"
+
+	"github.com/ob3/justgo"
 )
 
 func main() {
 	justgo.AddRoute(http.MethodGet, "/with-middleware", headerPrinterHandler, middleWareDummyOne, otherAuthHandler)
 	justgo.AddRoute(http.MethodGet, "/no-middleware", headerPrinterHandler)
+	justgo.Config.Add("APP_NAME", "My Volatile Config")
+	justgo.Config.ConfigFile("./sample/anything.yml")
 	justgo.Start()
 }
 

@@ -15,7 +15,7 @@ func (instrument *instrument) Load() {
 		cfg := newrelic.NewConfig(appName, newRelicLicense)
 		nrApp, err := newrelic.NewApplication(cfg)
 		if err != nil {
-			Log.Error(err)
+			Log.Error("disabling newrelic ", err)
 		}
 		Instrument.NewRelic = &nrApp
 	}
