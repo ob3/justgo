@@ -8,10 +8,18 @@ import (
 )
 
 func main() {
+	// add route with middleware
 	justgo.AddRoute(http.MethodGet, "/with-middleware", headerPrinterHandler, middleWareDummyOne, otherAuthHandler)
+
+	// add route without any middleware
 	justgo.AddRoute(http.MethodGet, "/no-middleware", headerPrinterHandler)
+
+	// config in code
 	justgo.Config.Add("APP_NAME", "My Volatile Config")
+
+	// set custom config path
 	justgo.Config.ConfigFile("./sample/anything.yml")
+
 	justgo.Start()
 }
 
