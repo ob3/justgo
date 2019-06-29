@@ -12,4 +12,6 @@ justgo.Start()
 ### Todo:
 * config
 * metric
+** newrelic
+** custom hooks
 * shell application interface
