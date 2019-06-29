@@ -6,6 +6,7 @@ func Start() {
 	Log.Info("starting justgo")
 	Config.Load()
 	Log.Load()
+	Instrument.Load()
 
 	if len(appInterfaces) == 0 {
 		justGoHttp = getDefaultHttpInterface()
@@ -14,5 +15,3 @@ func Start() {
 
 	RunAppInterface()
 }
-
-

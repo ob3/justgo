@@ -1,8 +1,9 @@
 package justgo
 
 import (
-	"github.com/sirupsen/logrus"
 	"os"
+
+	"github.com/sirupsen/logrus"
 )
 
 var Log *justGoLog
@@ -14,7 +15,7 @@ type justGoLog struct {
 func (log *justGoLog) Load() {
 	level, e := logrus.ParseLevel(Config.GetString("LOG_LEVEL"))
 	if e != nil {
-		Log.Fatal("invalid log LOG_LEVEL value")
+		Log.Fatal(e)
 	}
 	Log = &justGoLog{&logrus.Logger{
 		Out:       os.Stderr,
