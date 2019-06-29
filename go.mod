@@ -5,6 +5,7 @@ go 1.12
 require (
 	bou.ke/monkey v1.0.1
 	github.com/gorilla/mux v1.7.2
+	github.com/jstemmer/gotags v1.4.1 // indirect
 	github.com/magiconair/properties v1.8.1
 	github.com/newrelic/go-agent v2.8.1+incompatible
 	github.com/sirupsen/logrus v1.4.2

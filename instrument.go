@@ -21,6 +21,10 @@ func (instrument *instrument) Load() {
 	}
 }
 
+func (instrument *instrument) Increment(key string) {
+
+}
+
 func init() {
 	Instrument = &instrument{}
 }

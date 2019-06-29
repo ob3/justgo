@@ -27,6 +27,7 @@ func middleWareDummyOne(next http.Handler) http.Handler {
 	return http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		justgo.Log.Println("handling middleware 1")
 		w.Header().Add("x-middleware-dummy-one", "true")
+		justgo.Instrument.Increment("instrument-key-1")
 		next.ServeHTTP(w, r)
 	}))
 }
@@ -35,6 +36,7 @@ func otherAuthHandler(next http.Handler) http.Handler {
 	return http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		justgo.Log.Println("handling other auth handler")
 		w.Header().Add("x-middleware-dummy-two", "any value")
+		justgo.Instrument.Increment("instrument-key-2")
 		next.ServeHTTP(w, r)
 	}))
 }
