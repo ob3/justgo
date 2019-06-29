@@ -1,11 +1,12 @@
 package justgo
 
 import (
+	"os"
+	"testing"
+
 	"bou.ke/monkey"
 	"github.com/spf13/viper"
 	"gotest.tools/assert"
-	"os"
-	"testing"
 )
 
 func TestGetIntShouldReturnIntIfKeyValueIsInteger(t *testing.T) {
@@ -19,7 +20,7 @@ func TestGetIntShouldReturnIntIfKeyValueIsInteger(t *testing.T) {
 
 func TestGetIntShouldReturnIntIfKeyValueIsNotInteger(t *testing.T) {
 	fakeExit := func(code int) {
-		assert.Equal(t, 1, code )
+		assert.Equal(t, 1, code)
 	}
 	patch := monkey.Patch(os.Exit, fakeExit)
 	defer patch.Unpatch()
@@ -58,7 +59,7 @@ func TestFatalGetStringShouldExitIfNotFound(t *testing.T) {
 
 	fakeExit := func(code int) {
 		exited = true
-		assert.Equal(t, 1, code )
+		assert.Equal(t, 1, code)
 	}
 
 	patch := monkey.Patch(os.Exit, fakeExit)
@@ -75,12 +76,10 @@ func TestCheckKeyShouldExitWithCode1IfNotFound(t *testing.T) {
 
 	fakeExit := func(code int) {
 		exited = true
-		assert.Equal(t, 1, code )
+		assert.Equal(t, 1, code)
 	}
 
 	patch := monkey.Patch(os.Exit, fakeExit)
 	defer patch.Unpatch()
 	checkKey("DUMMY-ENV")
 }
-
-

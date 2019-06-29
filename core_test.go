@@ -1,23 +1,27 @@
 package justgo
 
 import (
-	"bou.ke/monkey"
 	"fmt"
-	"github.com/magiconair/properties/assert"
 	"reflect"
 	"testing"
+
+	"bou.ke/monkey"
+	"github.com/magiconair/properties/assert"
 )
 
 func TestStart(t *testing.T) {
 
 	configured, logged, runInterface, defaultInterface, registerInterface := false, false, false, false, false
 
-	dummyConfigLoad := func(*config) {
-		configured = true}
+	dummyConfigLoad := func(*config, ...string) {
+		configured = true
+	}
 	dummyLogLoad := func(*justGoLog) {
-		logged = true}
+		logged = true
+	}
 	dummyRunAppInterface := func() {
-		runInterface = true}
+		runInterface = true
+	}
 	dummyGetDefaultInterface := func() *HttpInterface {
 		defaultInterface = true
 		return nil
@@ -25,8 +29,7 @@ func TestStart(t *testing.T) {
 	dummyRegisterInterface := func(ApplicationInterface) {
 		registerInterface = true
 		fmt.Println(registerInterface)
-		}
-
+	}
 
 	pConfig := monkey.PatchInstanceMethod(reflect.TypeOf(Config), "Load", dummyConfigLoad)
 	pLog := monkey.PatchInstanceMethod(reflect.TypeOf(Log), "Load", dummyLogLoad)
@@ -40,7 +43,6 @@ func TestStart(t *testing.T) {
 	defer pRegisterInterface.Unpatch()
 
 	Start()
-
 
 	defer func() {
 		assert.Equal(t, configured, true)
@@ -59,14 +61,14 @@ func TestStartShouldNotUseDefaultInterfaceIfNotEmpty(t *testing.T) {
 	httpInterface := getDefaultHttpInterface()
 	RegisterInterface(httpInterface)
 
-	dummyConfigLoad := func(*config) {configured = true}
-	dummyLogLoad := func(*justGoLog) {logged = true}
-	dummyRunAppInterface := func() {runInterface = true}
+	dummyConfigLoad := func(*config, ...string) { configured = true }
+	dummyLogLoad := func(*justGoLog) { logged = true }
+	dummyRunAppInterface := func() { runInterface = true }
 	dummyGetDefaultInterface := func() *HttpInterface {
 		defaultInterface = true
 		return nil
-		}
-	dummyRegisterInterface := func(ApplicationInterface) {registerInterface = true }
+	}
+	dummyRegisterInterface := func(ApplicationInterface) { registerInterface = true }
 
 	pConfig := monkey.PatchInstanceMethod(reflect.TypeOf(Config), "Load", dummyConfigLoad)
 	pLog := monkey.PatchInstanceMethod(reflect.TypeOf(Log), "Load", dummyLogLoad)
@@ -78,7 +80,6 @@ func TestStartShouldNotUseDefaultInterfaceIfNotEmpty(t *testing.T) {
 	defer pRunInterface.Unpatch()
 	defer pGetDefaultHttpInterface.Unpatch()
 	defer pRegisterInterface.Unpatch()
-
 
 	Start()
 
