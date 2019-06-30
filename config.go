@@ -94,6 +94,32 @@ func (c *config) fatalGetString(key string) string {
 	return value
 }
 
+func (c *config) GetIntOrDefault(key string, fallback int64) int64 {
+	value := c.GetStringOrDefault(key, "")
+	if value == "" {
+		return fallback
+	} else {
+		intVal, err := strconv.ParseInt(value, 10, 64)
+		if err != nil {
+			return fallback
+		}
+		return intVal
+	}
+}
+
+func (c *config) GetBooleanOrDefault(key string, fallback bool) bool {
+	value := c.GetStringOrDefault(key, "")
+	if value == "" {
+		return fallback
+	} else {
+		intVal, err := strconv.ParseBool(value)
+		if err != nil {
+			return fallback
+		}
+		return intVal
+	}
+}
+
 func checkKey(key string) {
 	if !viper.IsSet(key) && os.Getenv(key) == "" {
 		debug.PrintStack()

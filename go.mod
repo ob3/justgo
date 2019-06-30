@@ -10,5 +10,6 @@ require (
 	github.com/sirupsen/logrus v1.4.2
 	github.com/spf13/viper v1.4.0
 	github.com/stretchr/testify v1.3.0
+	gopkg.in/alexcesaro/statsd.v2 v2.0.0
 	gotest.tools v2.2.0+incompatible
 )

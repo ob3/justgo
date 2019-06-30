@@ -1,6 +1,9 @@
 package justgo
 
-import "github.com/newrelic/go-agent"
+import (
+	"github.com/newrelic/go-agent"
+	"time"
+)
 
 var Instrument *instrument
 
@@ -10,15 +13,39 @@ type instrument struct {
 }
 
 func (instrument *instrument) Load() {
-	appName := Config.GetStringOrDefault("APP_NAME", "Undefined App Name")
-	newRelicLicense := Config.GetStringOrDefault("NEWRELIC_LICENSE", "")
-	if newRelicLicense != "" {
-		cfg := newrelic.NewConfig(appName, newRelicLicense)
-		nrApp, err := newrelic.NewApplication(cfg)
-		if err != nil {
-			Log.Error("disabling newrelic ", err)
+
+	enableNewRelic := Config.GetBooleanOrDefault("NEWRELIC_ENABLED", false)
+	enableStatsD := Config.GetBooleanOrDefault("STATSD_ENABLED", false)
+
+	if enableNewRelic {
+		appName := Config.GetStringOrDefault("APP_NAME", "Undefined App Name")
+		newRelicLicense := Config.GetStringOrDefault("NEWRELIC_LICENSE", "")
+		if newRelicLicense != "" {
+			cfg := newrelic.NewConfig(appName, newRelicLicense)
+			nrApp, err := newrelic.NewApplication(cfg)
+			if err != nil {
+				Log.Error("disabling newrelic ", err)
+			}
+			Instrument.NewRelic = nrApp
 		}
-		Instrument.NewRelic = nrApp
+	}
+
+	if len(instrument.metrics) == 0 && enableStatsD {
+		defaultStatsD := getDefaultStatsD()
+		err := defaultStatsD.Init()
+		if err == nil {
+			instrument.AddMetric(defaultStatsD)
+		}
+	}
+}
+
+func getDefaultStatsD() *metricStatsD {
+	return &metricStatsD{
+		Host: Config.GetStringOrDefault("STATSD_HOST", "localhost"),
+		Port: Config.GetIntOrDefault("STATSD_PORT", 8125),
+		Prefix: Config.GetStringOrDefault("STATSD_PREFIX", ""),
+		FlushPeriod: time.Duration(Config.GetIntOrDefault("STATSD_FLUSH_PERIOD_IN_SECONDS", 20)) * time.Second,
+		AppName: Config.GetStringOrDefault("APP_NAME", "Undefined App Name"),
 	}
 }
 
