@@ -1,11 +1,12 @@
 package justgo
 
-import newrelic "github.com/newrelic/go-agent"
+import "github.com/newrelic/go-agent"
 
 var Instrument *instrument
 
 type instrument struct {
-	NewRelic *newrelic.Application
+	NewRelic newrelic.Application
+	metrics  []*Metric
 }
 
 func (instrument *instrument) Load() {
@@ -17,12 +18,20 @@ func (instrument *instrument) Load() {
 		if err != nil {
 			Log.Error("disabling newrelic ", err)
 		}
-		Instrument.NewRelic = &nrApp
+		Instrument.NewRelic = nrApp
 	}
+}
+
+func (instrument *instrument) AddMetric(metric Metric) {
+	instrument.metrics = append(instrument.metrics, &metric)
 }
 
 func (instrument *instrument) Increment(key string) {
 
+	for _, metric := range instrument.metrics {
+		metricPointer := *metric
+		metricPointer.Increment(key)
+	}
 }
 
 func init() {

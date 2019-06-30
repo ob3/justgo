@@ -20,7 +20,22 @@ func main() {
 	// set custom config path
 	justgo.Config.ConfigFile("./sample/anything.yml")
 
+
+	// add custom metrics
+	justgo.Config.Add("METRIC_PREFIX_DUMMY", "MY_PREFIX_")
+	metric := &customMetric{}
+	justgo.Instrument.AddMetric(metric)
+
 	justgo.Start()
+
+}
+
+type customMetric struct {
+}
+
+func (cm *customMetric) Increment(key string) {
+	prefix := justgo.Config.GetString("METRIC_PREFIX_DUMMY")
+	justgo.Log.Info("incrementing metric: ", prefix, key)
 }
 
 func middleWareDummyOne(next http.Handler) http.Handler {
