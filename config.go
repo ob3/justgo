@@ -13,11 +13,11 @@ import (
 var Config *config
 
 var DEFAULT_CONFIGS = map[string]string{
-	"APP_PORT":  "8080",
-	"LOG_LEVEL": "debug",
+	ConfigKey.APP_PORT:  "8080",
+	ConfigKey.LOG_LEVEL: "debug",
 }
 
-var configFile string = ""
+var configFile = ""
 
 type config struct {
 }
@@ -98,13 +98,14 @@ func (c *config) GetIntOrDefault(key string, fallback int64) int64 {
 	value := c.GetStringOrDefault(key, "")
 	if value == "" {
 		return fallback
-	} else {
-		intVal, err := strconv.ParseInt(value, 10, 64)
-		if err != nil {
-			return fallback
-		}
-		return intVal
 	}
+
+	intVal, err := strconv.ParseInt(value, 10, 64)
+	if err != nil {
+		return fallback
+	}
+	return intVal
+
 }
 
 func (c *config) GetBooleanOrDefault(key string, fallback bool) bool {
