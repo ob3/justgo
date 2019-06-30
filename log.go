@@ -13,7 +13,7 @@ type justGoLog struct {
 }
 
 func (log *justGoLog) Load() {
-	level, e := logrus.ParseLevel(Config.GetString("LOG_LEVEL"))
+  	level, e := logrus.ParseLevel(Config.GetString(ConfigKey.LOG_LEVEL))
 	if e != nil {
 		Log.Fatal(e)
 	}

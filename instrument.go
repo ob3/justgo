@@ -14,12 +14,12 @@ type instrument struct {
 
 func (instrument *instrument) Load() {
 
-	enableNewRelic := Config.GetBooleanOrDefault("NEWRELIC_ENABLED", false)
-	enableStatsD := Config.GetBooleanOrDefault("STATSD_ENABLED", false)
+	enableNewRelic := Config.GetBooleanOrDefault(ConfigKey.NEWRELIC_ENABLED, false)
+	enableStatsD := Config.GetBooleanOrDefault(ConfigKey.STATSD_ENABLED, false)
 
 	if enableNewRelic {
-		appName := Config.GetStringOrDefault("APP_NAME", "Undefined App Name")
-		newRelicLicense := Config.GetStringOrDefault("NEWRELIC_LICENSE", "")
+		appName := Config.GetStringOrDefault(ConfigKey.APP_NAME, "Undefined App Name")
+		newRelicLicense := Config.GetStringOrDefault(ConfigKey.NEWRELIC_LICENSE, "")
 		if newRelicLicense != "" {
 			cfg := newrelic.NewConfig(appName, newRelicLicense)
 			nrApp, err := newrelic.NewApplication(cfg)
@@ -41,11 +41,11 @@ func (instrument *instrument) Load() {
 
 func getDefaultStatsD() *metricStatsD {
 	return &metricStatsD{
-		Host: Config.GetStringOrDefault("STATSD_HOST", "localhost"),
-		Port: Config.GetIntOrDefault("STATSD_PORT", 8125),
-		Prefix: Config.GetStringOrDefault("STATSD_PREFIX", ""),
-		FlushPeriod: time.Duration(Config.GetIntOrDefault("STATSD_FLUSH_PERIOD_IN_SECONDS", 20)) * time.Second,
-		AppName: Config.GetStringOrDefault("APP_NAME", "Undefined App Name"),
+		Host: Config.GetStringOrDefault(ConfigKey.STATSD_HOST, "localhost"),
+		Port: Config.GetIntOrDefault(ConfigKey.STATSD_PORT, 8125),
+		Prefix: Config.GetStringOrDefault(ConfigKey.STATSD_PREFIX, ""),
+		FlushPeriod: time.Duration(Config.GetIntOrDefault(ConfigKey.STATSD_FLUSH_PERIOD_IN_SECONDS, 20)) * time.Second,
+		AppName: Config.GetStringOrDefault(ConfigKey.APP_NAME, "Undefined App Name"),
 	}
 }
 
