@@ -2,6 +2,7 @@ package justgo
 
 import (
 	"github.com/gorilla/mux"
+	"github.com/newrelic/go-agent/_integrations/nrgorilla/v1"
 	"net/http"
 )
 
@@ -9,10 +10,17 @@ var router *mux.Router
 
 func getRouter() http.Handler {
 	if router == nil {
+		InstantiateNewRouter()
+	}
+	return router
+}
+
+func InstantiateNewRouter() {
+	if Instrument.NewRelic != nil {
+		router = nrgorilla.InstrumentRoutes(mux.NewRouter(), Instrument.NewRelic)
+	} else {
 		router = mux.NewRouter()
 	}
-
-	return router
 }
 
 
