@@ -8,7 +8,7 @@ import (
 
 var router *mux.Router
 var mandatoryMiddleWares []func(handler http.Handler) http.Handler
-func getRouter() http.Handler {
+func GetRouter() http.Handler {
 	if router == nil {
 		InstantiateNewRouter()
 	}
@@ -28,7 +28,7 @@ func AlwaysUseMiddleware(middleWares ... func (handler http.Handler) http.Handle
 }
 
 func AddRoute(method string, pattern string, handler http.HandlerFunc, middlewares ...func(http.Handler) http.Handler) {
-	i := getRouter().(*mux.Router)
+	i := GetRouter().(*mux.Router)
 
 	joinedMiddleWares := append(mandatoryMiddleWares, middlewares...)
 	if len(joinedMiddleWares) == 0 {

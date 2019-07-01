@@ -15,6 +15,7 @@ var Config *config
 var DEFAULT_CONFIGS = map[string]string{
 	ConfigKey.APP_PORT:  "8080",
 	ConfigKey.LOG_LEVEL: "debug",
+	ConfigKey.STATSD_ENABLED: "false",
 }
 
 var configFile = ""

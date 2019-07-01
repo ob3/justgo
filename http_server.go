@@ -50,7 +50,7 @@ func waitForShutdown(apiServer *http.Server) {
 
 func getDefaultHttpInterface() *HttpInterface {
 
-	router := getRouter()
+	router := GetRouter()
 	AddRoute(http.MethodGet, "/ping", pingHandler)
 	return &HttpInterface{
 		Handler: router,
