@@ -96,8 +96,8 @@ func (c *config) fatalGetString(key string) string {
 }
 
 func (c *config) GetIntOrDefault(key string, fallback int64) int64 {
-	value := c.GetStringOrDefault(key, "")
-	if value == "" {
+	value := c.GetStringOrDefault(key, strconv.FormatInt(fallback, 10))
+	if value == strconv.FormatInt(fallback, 10) {
 		return fallback
 	}
 
@@ -110,8 +110,8 @@ func (c *config) GetIntOrDefault(key string, fallback int64) int64 {
 }
 
 func (c *config) GetBooleanOrDefault(key string, fallback bool) bool {
-	value := c.GetStringOrDefault(key, "")
-	if value == "" {
+	value := c.GetStringOrDefault(key, strconv.FormatBool(fallback))
+	if value == strconv.FormatBool(fallback) {
 		return fallback
 	} else {
 		intVal, err := strconv.ParseBool(value)
