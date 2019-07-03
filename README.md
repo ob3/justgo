@@ -9,13 +9,14 @@ justgo.AddRoute(http.MethodGet, "/no-middleware", headerPrinterHandler)
 justgo.Start()
 ~~~~
 
-### Todo:
+### Features:
+* [x] extensible app interface
+* [x] default app interface
 * [x] config
 * [x] metric
     * [x] newrelic
     * [x] custom hooks
-* [ ] sentry 
+* [x] sentry reporting 
 * [ ] i18n 
-* [ ] DB migration
 * [ ] api client with hystrix
 * [ ] shell application interface
