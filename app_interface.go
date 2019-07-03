@@ -18,7 +18,6 @@ func RunAppInterfaces() {
 		singleInterface := *appInterface
 		go singleInterface.Serve()
 	}
-	//time.Sleep(2)
 	WaitForShutdown()
 }
 

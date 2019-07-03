@@ -20,7 +20,12 @@ func main() {
 	// set custom config path
 	justgo.Config.ConfigFile("./sample/anything.yml")
 
-
+	justgo.RegisterInterface(justgo.GetDefaultHttpInterface())
+	cliInterface := &justgo.CliInterface{Address: ":12345"}
+	cliInterface.AddCommand("test", echo)
+	cliInterface.AddCommand("panic", panicCommand)
+	cliInterface.AddCommand("fatal", fatalCommand)
+	justgo.RegisterInterface(cliInterface)
 	// add custom metrics
 	justgo.Config.Add("METRIC_PREFIX_DUMMY", "MY_PREFIX_")
 	metric := &customMetric{}
@@ -31,6 +36,19 @@ func main() {
 }
 
 type customMetric struct {
+}
+
+func echo (param string) string {
+	return fmt.Sprintf("param1 is: %s", param)
+}
+
+func panicCommand(param string) string {
+	panic("this is paniced command")
+}
+
+func fatalCommand(param string) string {
+	justgo.Log.Fatal("fatal command")
+	return param
 }
 
 func (cm *customMetric) Increment(key string) {

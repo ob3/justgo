@@ -13,8 +13,8 @@ import (
 var Config *config
 
 var DEFAULT_CONFIGS = map[string]string{
-	"APP_PORT":  "8080",
-	"LOG_LEVEL": "debug",
+	"APP_PORT":       "8080",
+	"LOG_LEVEL":      "debug",
 	"STATSD_ENABLED": "false",
 }
 
