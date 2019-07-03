@@ -1,19 +1,23 @@
 package justgo
 
+import "context"
+
 var justGoHttp *HttpInterface
+var appContext context.Context
 
 func Start() {
 	Log.Info("starting justgo")
 	Initialise()
-	RunAppInterface()
+	RunAppInterfaces()
 }
 
 func Initialise() {
+	appContext = context.Background()
 	Config.Load()
 	Log.Load()
 	Instrument.Load()
 	if len(appInterfaces) == 0 {
-		justGoHttp = getDefaultHttpInterface()
+		justGoHttp = GetDefaultHttpInterface()
 		RegisterInterface(justGoHttp)
 	}
 }

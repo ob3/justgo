@@ -26,15 +26,15 @@ func TestStart(t *testing.T) {
 		defaultInterface = true
 		return nil
 	}
-	dummyRegisterInterface := func(ApplicationInterface) {
+	dummyRegisterInterface := func(AppInterface) {
 		registerInterface = true
 		fmt.Println(registerInterface)
 	}
 
 	pConfig := monkey.PatchInstanceMethod(reflect.TypeOf(Config), "Load", dummyConfigLoad)
 	pLog := monkey.PatchInstanceMethod(reflect.TypeOf(Log), "Load", dummyLogLoad)
-	pRunInterface := monkey.Patch(RunAppInterface, dummyRunAppInterface)
-	pGetDefaultHttpInterface := monkey.Patch(getDefaultHttpInterface, dummyGetDefaultInterface)
+	pRunInterface := monkey.Patch(RunAppInterfaces, dummyRunAppInterface)
+	pGetDefaultHttpInterface := monkey.Patch(GetDefaultHttpInterface, dummyGetDefaultInterface)
 	pRegisterInterface := monkey.Patch(RegisterInterface, dummyRegisterInterface)
 	defer pConfig.Unpatch()
 	defer pLog.Unpatch()
@@ -58,7 +58,7 @@ func TestStartShouldNotUseDefaultInterfaceIfNotEmpty(t *testing.T) {
 
 	configured, logged, runInterface, defaultInterface, registerInterface := false, false, false, false, false
 
-	httpInterface := getDefaultHttpInterface()
+	httpInterface := GetDefaultHttpInterface()
 	RegisterInterface(httpInterface)
 
 	dummyConfigLoad := func(*config) { configured = true }
@@ -68,12 +68,12 @@ func TestStartShouldNotUseDefaultInterfaceIfNotEmpty(t *testing.T) {
 		defaultInterface = true
 		return nil
 	}
-	dummyRegisterInterface := func(ApplicationInterface) { registerInterface = true }
+	dummyRegisterInterface := func(AppInterface) { registerInterface = true }
 
 	pConfig := monkey.PatchInstanceMethod(reflect.TypeOf(Config), "Load", dummyConfigLoad)
 	pLog := monkey.PatchInstanceMethod(reflect.TypeOf(Log), "Load", dummyLogLoad)
-	pRunInterface := monkey.Patch(RunAppInterface, dummyRunAppInterface)
-	pGetDefaultHttpInterface := monkey.Patch(getDefaultHttpInterface, dummyGetDefaultInterface)
+	pRunInterface := monkey.Patch(RunAppInterfaces, dummyRunAppInterface)
+	pGetDefaultHttpInterface := monkey.Patch(GetDefaultHttpInterface, dummyGetDefaultInterface)
 	pRegisterInterface := monkey.Patch(RegisterInterface, dummyRegisterInterface)
 	defer pConfig.Unpatch()
 	defer pLog.Unpatch()
