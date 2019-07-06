@@ -19,6 +19,8 @@ type configKey struct {
 
 	SENTRY_ENABLED string
 	SENTRY_DSN     string
+
+	DEFAULT_INTERFACE_HTTP_ENABLED string
 }
 
 func init() {
@@ -38,5 +40,7 @@ func init() {
 
 		SENTRY_ENABLED: "SENTRY_ENABLED",
 		SENTRY_DSN:     "SENTRY_DSN",
+
+		DEFAULT_INTERFACE_HTTP_ENABLED: "DEFAULT_INTERFACE_HTTP_ENABLED",
 	}
 }

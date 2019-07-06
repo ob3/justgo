@@ -20,12 +20,23 @@ func main() {
 	// set custom config path
 	justgo.Config.ConfigFile("./sample/anything.yml")
 
+	// disable default http handler
+	justgo.Config.Add(justgo.ConfigKey.DEFAULT_INTERFACE_HTTP_ENABLED, "false")
+
+	// add your own http handler
 	justgo.RegisterInterface(justgo.GetDefaultHttpInterface())
+
+	// add cli handler via telnet
 	cliInterface := &justgo.CliInterface{Address: ":12345"}
+
+	// add command on telnet command
 	cliInterface.AddCommand("test", echo)
 	cliInterface.AddCommand("panic", panicCommand)
 	cliInterface.AddCommand("fatal", fatalCommand)
+
+	// register interface
 	justgo.RegisterInterface(cliInterface)
+	
 	// add custom metrics
 	justgo.Config.Add("METRIC_PREFIX_DUMMY", "MY_PREFIX_")
 	metric := &customMetric{}

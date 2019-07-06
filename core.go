@@ -1,8 +1,11 @@
 package justgo
 
-import "context"
+import (
+	"context"
+)
 
 var justGoHttp *HttpInterface
+var justGoCli *CliInterface
 var appContext context.Context
 
 func Start() {
@@ -16,7 +19,8 @@ func Initialise() {
 	Config.Load()
 	Log.Load()
 	Instrument.Load()
-	if len(appInterfaces) == 0 {
+	enableHttpInterface := Config.GetBooleanOrDefault(ConfigKey.DEFAULT_INTERFACE_HTTP_ENABLED, true)
+	if enableHttpInterface {
 		justGoHttp = GetDefaultHttpInterface()
 		RegisterInterface(justGoHttp)
 	}
