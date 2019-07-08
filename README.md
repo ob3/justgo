@@ -3,19 +3,19 @@ Simple Api Provider
 
 ### usage:
 
-####custom config file
+#### custom config file
 as default, justgo scan app folder for application.yml for config. use this command to override where to get the config file
 ~~~~
 justgo.Config.ConfigFile("./sample/anything.yml")
 ~~~~
 
-####in code config
+#### in code config
 ~~~~
 justgo.Config.Add("APP_NAME", "My Volatile Config")
 ~~~~
 
 
-####http
+#### http
 http interface is enabled by default. if you only want to use http server only, simply add route and start justgo
 ~~~~
 justgo.AddRoute(http.MethodGet, "/with-middleware", headerPrinterHandler, middleWareDummyOne, otherAuthHandler)
@@ -23,7 +23,7 @@ justgo.AddRoute(http.MethodGet, "/no-middleware", headerPrinterHandler)
 justgo.Start()
 ~~~~
 
-####Cli 
+#### Cli 
 adding another interface in same app
 ~~~~
 // add cli handler via telnet
