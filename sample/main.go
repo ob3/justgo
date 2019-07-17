@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"net/http"
 
+	_ "github.com/lib/pq"
 	"github.com/ob3/justgo"
+
 )
 
 func main() {
@@ -36,11 +38,15 @@ func main() {
 
 	// register interface
 	justgo.RegisterInterface(cliInterface)
-	
+
 	// add custom metrics
 	justgo.Config.Add("METRIC_PREFIX_DUMMY", "MY_PREFIX_")
 	metric := &customMetric{}
 	justgo.Instrument.AddMetric(metric)
+
+	// enable database
+	justgo.Config.Add("DB_DRIVER", "postgres")
+	justgo.Config.Add("DB_CONNECTION_STRING", "dbname=postgres user=postgres password=abcdef host=localhost sslmode=disable")
 
 	justgo.Start()
 
@@ -49,7 +55,7 @@ func main() {
 type customMetric struct {
 }
 
-func echo (param string) string {
+func echo(param string) string {
 	return fmt.Sprintf("param1 is: %s", param)
 }
 

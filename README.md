@@ -23,6 +23,20 @@ justgo.AddRoute(http.MethodGet, "/no-middleware", headerPrinterHandler)
 justgo.Start()
 ~~~~
 
+#### connecting to Database
+~~~~
+// this is required for sql package to have registered database driver.
+// corresponding driver will register it self to available driver in sql package
+import _ "github.com/lib/pq"
+
+// enable database
+justgo.Config.Add("DB_DRIVER", "postgres")
+justgo.Config.Add("DB_CONNECTION_STRING", "dbname=postgres user=postgres password=abcdef host=localhost sslmode=disable")
+
+// get the db instance
+db := justgo.Storage.Get()
+~~~~
+
 #### Cli 
 adding another interface in same app
 ~~~~
@@ -49,6 +63,7 @@ justgo.Start()
     * [x] newrelic
     * [x] custom hooks
     * [x] StatsD integration
-    * [x] sentry reporting 
+    * [x] sentry reporting
+* [x] database 
 * [ ] i18n 
 * [ ] api client with hystrix
