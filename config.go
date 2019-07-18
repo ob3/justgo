@@ -12,11 +12,7 @@ import (
 
 var Config *config
 
-var DEFAULT_CONFIGS = map[string]string{
-	"APP_PORT":       "8080",
-	"LOG_LEVEL":      "debug",
-	"STATSD_ENABLED": "false",
-}
+var DEFAULT_CONFIGS = map[string]string{}
 
 var configFile = ""
 
@@ -38,7 +34,7 @@ func (c *config) GetInt(key string) int64 {
 
 func (c *config) GetStringOrDefault(key string, fallback string) string {
 	if !viper.IsSet(key) && os.Getenv(key) == "" {
-		Log.WithField("key", key).WithField("value", fallback).Info("config not found using default")
+		Log.WithField("key", key).WithField("value", fallback).Debug("config not found using default")
 		return fallback
 	}
 	return c.GetString(key)

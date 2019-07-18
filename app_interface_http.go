@@ -16,7 +16,7 @@ func (httpInterface HttpInterface) Serve() {
 	defer logWriter.Close()
 
 	httpInterface.server = &http.Server{
-		Addr:     ":"+Config.GetString(ConfigKey.APP_PORT),
+		Addr:     ":"+Config.GetStringOrDefault(ConfigKey.APP_PORT, "8080"),
 		ErrorLog: log.New(logWriter, "", 0),
 		Handler: httpInterface.Handler,
 	}

@@ -14,7 +14,7 @@ type justGoLog struct {
 
 func (log *justGoLog) Load() {
 	sentryEnabled := Config.GetBooleanOrDefault(ConfigKey.SENTRY_ENABLED, false)
-	level, e := logrus.ParseLevel(Config.GetString(ConfigKey.LOG_LEVEL))
+	level, e := logrus.ParseLevel(Config.GetStringOrDefault(ConfigKey.LOG_LEVEL, "info"))
 	if e != nil {
 		Log.Fatal(e)
 	}
@@ -43,6 +43,6 @@ func init() {
 		Out:       os.Stderr,
 		Formatter: &logrus.JSONFormatter{},
 		Hooks:     make(logrus.LevelHooks),
-		Level:     logrus.DebugLevel,
+		Level:     logrus.InfoLevel,
 	}}
 }
