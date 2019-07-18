@@ -7,6 +7,7 @@ import (
 var loadedDb *sqlx.DB
 var Storage storage
 
+type DB func() *sqlx.DB
 type storage struct {
 	db *sqlx.DB
 	ConfiguredDriver,

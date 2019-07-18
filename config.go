@@ -50,10 +50,12 @@ func (c *config) GetString(key string) string {
 
 func (c *config) Add(key string, value string) {
 	DEFAULT_CONFIGS[key] = value
+	viper.SetDefault(key, value)
 }
 
 func (c *config) ConfigFile(path string) {
 	configFile = path
+	c.Load()
 }
 
 func (c *config) Load() {
