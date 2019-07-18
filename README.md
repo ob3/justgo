@@ -33,8 +33,10 @@ import _ "github.com/lib/pq"
 justgo.Config.Add("DB_DRIVER", "postgres")
 justgo.Config.Add("DB_CONNECTION_STRING", "dbname=postgres user=postgres password=abcdef host=localhost sslmode=disable")
 
-// get the db instance
-db := justgo.Storage.Get()
+// get the db instance and inject it in your repository
+// or you can simply call it anywhere in the app
+// the db instance won't be initialized until justgo.Initialize() or justgo.Start()
+db := &justgo.Storage.DB
 ~~~~
 
 #### Cli 

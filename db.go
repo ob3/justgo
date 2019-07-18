@@ -7,9 +7,11 @@ import (
 var loadedDb *sqlx.DB
 var Storage storage
 
-type DB func() *sqlx.DB
+type DB struct {
+	*sqlx.DB
+}
 type storage struct {
-	db *sqlx.DB
+	DB DB
 	ConfiguredDriver,
 	ConnectionString string
 	ConnectionPool int64
@@ -29,17 +31,10 @@ func (s *storage) Load(){
 
 	if enableDB && s.ConnectionString != ""{
 		Log.Info("connecting to db")
-		s.db = newDB(s.ConfiguredDriver, s.ConnectionString, int(s.ConnectionPool))
+		s.DB = DB{newDB(s.ConfiguredDriver, s.ConnectionString, int(s.ConnectionPool))}
 	} else {
 		Log.WithField("config", s).Warn("Storage is not initialized")
 	}
-}
-
-func (s *storage) Get() *sqlx.DB{
-	if s.db == nil {
-		Log.WithField("config", s).Panic("Storage is not loaded")
-	}
-	return s.db
 }
 
 func newDB(driver, connectionString string, poolSize int) *sqlx.DB {
