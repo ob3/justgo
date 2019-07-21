@@ -4,8 +4,7 @@ import (
 	"database/sql"
 	"github.com/jmoiron/sqlx"
 )
-var loadedDb *sqlx.DB
-var Storage storage
+var defaultStorage storage
 
 type DB struct {
 	*sqlx.DB
@@ -33,7 +32,7 @@ func (s *storage) Load(){
 		Log.Info("connecting to db")
 		s.DB = DB{newDB(s.ConfiguredDriver, s.ConnectionString, int(s.ConnectionPool))}
 	} else {
-		Log.WithField("config", s).Warn("Storage is not initialized")
+		Log.WithField("config", s).Warn("defaultStorage is not initialized")
 	}
 }
 
@@ -56,9 +55,6 @@ func newDB(driver, connectionString string, poolSize int) *sqlx.DB {
 	return db
 }
 
-func GetDB() *sqlx.DB{
-	if loadedDb == nil {
-		Log.Panic("db is not loaded")
-	}
-	return loadedDb
+func GetDB() DB {
+	return defaultStorage.DB
 }

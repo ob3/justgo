@@ -18,8 +18,8 @@ func Initialise() {
 	appContext = context.Background()
 	Config.Load()
 	Log.Load()
-	Instrument.Load()
-	Storage.Load()
+	defaultInstrument.Load()
+	defaultStorage.Load()
 	enableHttpInterface := Config.GetBooleanOrDefault(ConfigKey.DEFAULT_INTERFACE_HTTP_ENABLED, true)
 	if enableHttpInterface {
 		justGoHttp = GetDefaultHttpInterface()

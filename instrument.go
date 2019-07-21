@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-var Instrument *instrument
+var defaultInstrument *instrument
 
 type instrument struct {
 	NewRelic newrelic.Application
@@ -26,7 +26,7 @@ func (instrument *instrument) Load() {
 			if err != nil {
 				Log.Error("disabling newrelic ", err)
 			}
-			Instrument.NewRelic = nrApp
+			defaultInstrument.NewRelic = nrApp
 		}
 	}
 
@@ -61,6 +61,10 @@ func (instrument *instrument) Increment(key string) {
 	}
 }
 
+func GetInstrument() *instrument {
+	return defaultInstrument
+}
+
 func init() {
-	Instrument = &instrument{}
+	defaultInstrument = &instrument{}
 }

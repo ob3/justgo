@@ -16,8 +16,8 @@ func GetRouter() http.Handler {
 }
 
 func InstantiateNewRouter() {
-	if Instrument.NewRelic != nil {
-		router = nrgorilla.InstrumentRoutes(mux.NewRouter(), Instrument.NewRelic)
+	if defaultInstrument.NewRelic != nil {
+		router = nrgorilla.InstrumentRoutes(mux.NewRouter(), defaultInstrument.NewRelic)
 	} else {
 		router = mux.NewRouter()
 	}

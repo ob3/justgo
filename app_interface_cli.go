@@ -103,6 +103,7 @@ func cleanInput(input string) string {
 
 func (cli *CliInterface) ShutDown() {
 	Log.Info("shutting down CLI")
+	cli.listener.Close()
 }
 
 func acceptConnection(listener net.Listener, listen chan<- net.Conn) {
