@@ -10,7 +10,7 @@ type DB struct {
 	*sqlx.DB
 }
 type storage struct {
-	DB DB
+	db DB
 	ConfiguredDriver,
 	ConnectionString string
 	ConnectionPool int64
@@ -29,8 +29,8 @@ func (s *storage) Load(){
 	}
 
 	if enableDB && s.ConnectionString != ""{
-		Log.Info("connecting to db")
-		s.DB = DB{newDB(s.ConfiguredDriver, s.ConnectionString, int(s.ConnectionPool))}
+		Log.Info("connecting to DB")
+		s.db = DB{newDB(s.ConfiguredDriver, s.ConnectionString, int(s.ConnectionPool))}
 	} else {
 		Log.WithField("config", s).Warn("defaultStorage is not initialized")
 	}
@@ -55,6 +55,6 @@ func newDB(driver, connectionString string, poolSize int) *sqlx.DB {
 	return db
 }
 
-func GetDB() DB {
-	return defaultStorage.DB
+func GetDB() *DB {
+	return &defaultStorage.db
 }

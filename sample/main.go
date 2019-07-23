@@ -6,7 +6,6 @@ import (
 
 	_ "github.com/lib/pq"
 	"github.com/ob3/justgo"
-
 )
 
 func main() {
@@ -47,6 +46,10 @@ func main() {
 	// enable database
 	justgo.Config.Add("DB_DRIVER", "postgres")
 	justgo.Config.Add("DB_CONNECTION_STRING", "dbname=postgres user=postgres password=abcdef host=localhost sslmode=disable")
+
+	db := justgo.GetDB()
+	justgo.Log.Info(db)
+
 
 	justgo.Start()
 
