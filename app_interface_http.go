@@ -2,7 +2,7 @@ package justgo
 
 import (
 	"context"
-	"log"
+	golangLogger "log"
 	"net/http"
 )
 
@@ -12,35 +12,35 @@ type HttpInterface struct {
 }
 
 func (httpInterface HttpInterface) Serve() {
-	logWriter := Log.Writer()
+	logWriter := log.Writer()
 	defer logWriter.Close()
 
 	httpInterface.server = &http.Server{
 		Addr:     ":"+Config.GetStringOrDefault(ConfigKey.APP_PORT, "8080"),
-		ErrorLog: log.New(logWriter, "", 0),
+		ErrorLog: golangLogger.New(logWriter, "", 0),
 		Handler: httpInterface.Handler,
 	}
 
-	Log.Printf("listening on %s", httpInterface.server.Addr)
+	log.Printf("listening on %s", httpInterface.server.Addr)
 	listenServer(httpInterface.server)
 }
 
 func (httpInterface HttpInterface) ShutDown() {
-	Log.Info("API server shutting down")
+	log.Info("API server shutting down")
 	// Finish all apis being served and shutdown gracefully
 	if httpInterface.server != nil {
 		shutdown := httpInterface.server.Shutdown(context.Background())
 		if shutdown != nil {
-			Log.Info(shutdown)
+			log.Info(shutdown)
 		}
 	}
-	Log.Info("API server shutdown complete")
+	log.Info("API server shutdown complete")
 }
 
 func listenServer(apiServer *http.Server) {
 	err := apiServer.ListenAndServe()
 	if err != http.ErrServerClosed {
-		Log.Fatal(err.Error())
+		log.Fatal(err.Error())
 	}
 }
 

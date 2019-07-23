@@ -29,10 +29,10 @@ func (s *storage) Load(){
 	}
 
 	if enableDB && s.ConnectionString != ""{
-		Log.Info("connecting to DB")
+		log.Info("connecting to DB")
 		s.db = DB{newDB(s.ConfiguredDriver, s.ConnectionString, int(s.ConnectionPool))}
 	} else {
-		Log.WithField("config", s).Warn("defaultStorage is not initialized")
+		log.WithField("config", s).Warn("defaultStorage is not initialized")
 	}
 }
 
@@ -40,13 +40,13 @@ func newDB(driver, connectionString string, poolSize int) *sqlx.DB {
 
 	db, err := sqlx.Open(driver, connectionString)
 	if err != nil {
-		Log.WithField("error", err).
+		log.WithField("error", err).
 			WithField("driver", driver).
 			Fatal("Error while connecting to database")
 	}
 
 	if err = db.Ping(); err != nil {
-		Log.WithField("error", err).
+		log.WithField("error", err).
 			WithField("driver", driver).
 			Fatal("ping to the database host failed")
 	}

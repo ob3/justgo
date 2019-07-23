@@ -8,6 +8,8 @@ import (
 	"github.com/ob3/justgo"
 )
 
+var log = justgo.GetLogger()
+
 func main() {
 	// add route with middleware
 	justgo.AddRoute(http.MethodGet, "/with-middleware", headerPrinterHandler, middleWareDummyOne, otherAuthHandler)
@@ -47,8 +49,9 @@ func main() {
 	justgo.Config.Add("DB_DRIVER", "postgres")
 	justgo.Config.Add("DB_CONNECTION_STRING", "dbname=postgres user=postgres password=abcdef host=localhost sslmode=disable")
 
+	// get db instance pointer. the db will initialized when justgo.Initialize() or justgo.Start() executed
 	db := justgo.GetDB()
-	justgo.Log.Info(db)
+	log.Info(db)
 
 
 	justgo.Start()
@@ -67,18 +70,18 @@ func panicCommand(param string) string {
 }
 
 func fatalCommand(param string) string {
-	justgo.Log.Fatal("fatal command")
+	log.Fatal("fatal command")
 	return param
 }
 
 func (cm *customMetric) Increment(key string) {
 	prefix := justgo.Config.GetString("METRIC_PREFIX_DUMMY")
-	justgo.Log.Info("incrementing metric: ", prefix, key)
+	log.Info("incrementing metric: ", prefix, key)
 }
 
 func middleWareDummyOne(next http.Handler) http.Handler {
 	return http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		justgo.Log.Println("handling middleware 1")
+		log.Println("handling middleware 1")
 		w.Header().Add("x-middleware-dummy-one", "true")
 		justgo.GetInstrument().Increment("instrument-key-1")
 		next.ServeHTTP(w, r)
@@ -87,7 +90,7 @@ func middleWareDummyOne(next http.Handler) http.Handler {
 
 func otherAuthHandler(next http.Handler) http.Handler {
 	return http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		justgo.Log.Println("handling other auth handler")
+		log.Println("handling other auth handler")
 		w.Header().Add("x-middleware-dummy-two", "any value")
 		justgo.GetInstrument().Increment("instrument-key-2")
 		next.ServeHTTP(w, r)
@@ -95,7 +98,7 @@ func otherAuthHandler(next http.Handler) http.Handler {
 }
 
 func headerPrinterHandler(w http.ResponseWriter, request *http.Request) {
-	justgo.Log.Println("handling poooong")
+	log.Println("handling poooong")
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	stringHeaders := fmt.Sprintf("a %s", w.Header())

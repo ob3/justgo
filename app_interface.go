@@ -27,13 +27,13 @@ func WaitForShutdown() {
 		syscall.SIGINT,
 		syscall.SIGTERM)
 	_ = <-shutdownSignal
-	Log.Info("shutting down")
+	log.Info("shutting down")
 	// Finish all apis being served and shutdown gracefully
 	for _, appInterface := range appInterfaces {
 		singleInterface := *appInterface
 		go singleInterface.ShutDown()
 	}
-	Log.Info("shutdown complete")
+	log.Info("shutdown complete")
 }
 
 func RegisterInterface(appInterface AppInterface) {

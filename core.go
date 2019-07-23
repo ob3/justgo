@@ -9,7 +9,7 @@ var justGoCli *CliInterface
 var appContext context.Context
 
 func Start() {
-	Log.Info("starting justgo")
+	log.Info("starting justgo")
 	Initialise()
 	RunAppInterfaces()
 }
@@ -17,7 +17,7 @@ func Start() {
 func Initialise() {
 	appContext = context.Background()
 	Config.Load()
-	Log.Load()
+	log.Load()
 	defaultInstrument.Load()
 	defaultStorage.Load()
 	enableHttpInterface := Config.GetBooleanOrDefault(ConfigKey.DEFAULT_INTERFACE_HTTP_ENABLED, true)

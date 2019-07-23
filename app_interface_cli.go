@@ -23,7 +23,7 @@ func (cli *CliInterface) AddCommand(command string, function CliCommand) {
 }
 
 func (cli *CliInterface) Serve() {
-	Log.Info("serving CLI: ", cli.Address)
+	log.Info("serving CLI: ", cli.Address)
 	var err error
 	cli.listener, err = net.Listen("tcp", cli.Address)
 	if err == nil {
@@ -34,7 +34,7 @@ func (cli *CliInterface) Serve() {
 			go cli.handleClient(conn)
 		}
 	} else {
-		Log.Error(err)
+		log.Error(err)
 	}
 }
 
@@ -76,7 +76,7 @@ func execAndReturn(function CliCommand, param string, conn net.Conn) {
 	defer func() {
 		if r := recover(); r != nil {
 			stack := debug.Stack()
-			Log.Error(string(stack))
+			log.Error(string(stack))
 			conn.Write(stack)
 		}
 	}()
@@ -102,7 +102,7 @@ func cleanInput(input string) string {
 }
 
 func (cli *CliInterface) ShutDown() {
-	Log.Info("shutting down CLI")
+	log.Info("shutting down CLI")
 	cli.listener.Close()
 }
 

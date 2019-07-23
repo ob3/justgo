@@ -32,7 +32,7 @@ func TestStart(t *testing.T) {
 	}
 
 	pConfig := monkey.PatchInstanceMethod(reflect.TypeOf(Config), "Load", dummyConfigLoad)
-	pLog := monkey.PatchInstanceMethod(reflect.TypeOf(Log), "Load", dummyLogLoad)
+	pLog := monkey.PatchInstanceMethod(reflect.TypeOf(log), "Load", dummyLogLoad)
 	pRunInterface := monkey.Patch(RunAppInterfaces, dummyRunAppInterface)
 	pGetDefaultHttpInterface := monkey.Patch(GetDefaultHttpInterface, dummyGetDefaultInterface)
 	pRegisterInterface := monkey.Patch(RegisterInterface, dummyRegisterInterface)
@@ -71,7 +71,7 @@ func TestStartShouldNotUseDefaultInterfaceIfNotEmpty(t *testing.T) {
 	dummyRegisterInterface := func(AppInterface) { registerInterface = true }
 
 	pConfig := monkey.PatchInstanceMethod(reflect.TypeOf(Config), "Load", dummyConfigLoad)
-	pLog := monkey.PatchInstanceMethod(reflect.TypeOf(Log), "Load", dummyLogLoad)
+	pLog := monkey.PatchInstanceMethod(reflect.TypeOf(log), "Load", dummyLogLoad)
 	pRunInterface := monkey.Patch(RunAppInterfaces, dummyRunAppInterface)
 	pGetDefaultHttpInterface := monkey.Patch(GetDefaultHttpInterface, dummyGetDefaultInterface)
 	pRegisterInterface := monkey.Patch(RegisterInterface, dummyRegisterInterface)

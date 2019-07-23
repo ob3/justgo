@@ -24,7 +24,7 @@ func (c *config) GetInt(key string) int64 {
 	configStr := c.fatalGetString(key)
 	config, err := strconv.ParseInt(configStr, 10, 64)
 	if err != nil {
-		Log.
+		log.
 			WithField("key", key).
 			WithField("err", err).
 			Fatalf("can't parsing key %s error: %s", key, err.Error())
@@ -34,7 +34,7 @@ func (c *config) GetInt(key string) int64 {
 
 func (c *config) GetStringOrDefault(key string, fallback string) string {
 	if !viper.IsSet(key) && os.Getenv(key) == "" {
-		Log.WithField("key", key).WithField("value", fallback).Debug("config not found using default")
+		log.WithField("key", key).WithField("value", fallback).Debug("config not found using default")
 		return fallback
 	}
 	return c.GetString(key)
@@ -62,7 +62,7 @@ func (c *config) Load() {
 	viper.AutomaticEnv()
 
 	if configFile != "" {
-		Log.Info("using config file ", configFile)
+		log.Info("using config file ", configFile)
 		dir, file := filepath.Split(configFile)
 
 		fileSplitted := strings.Split(file, ".")
@@ -123,6 +123,6 @@ func (c *config) GetBooleanOrDefault(key string, fallback bool) bool {
 func checkKey(key string) {
 	if !viper.IsSet(key) && os.Getenv(key) == "" {
 		debug.PrintStack()
-		Log.Fatalf("%s key is not set", key)
+		log.Fatalf("%s key is not set", key)
 	}
 }
