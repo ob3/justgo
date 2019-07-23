@@ -87,7 +87,7 @@ func TestStartShouldNotUseDefaultInterfaceIfNotEmpty(t *testing.T) {
 		assert.Equal(t, configured, true)
 		assert.Equal(t, logged, true)
 		assert.Equal(t, runInterface, true)
-		assert.Equal(t, defaultInterface, false)
+		assert.Equal(t, defaultInterface, true)
 		assert.Equal(t, registerInterface, false)
 
 	}()
